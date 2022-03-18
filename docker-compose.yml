@@ -1,0 +1,10 @@
+version: '3.9'
+
+services:
+  ic:
+    build:
+      context: .
+    ports:
+      - 8000:8000
+    volumes:
+      - ./ic:/ic
