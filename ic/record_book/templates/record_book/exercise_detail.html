@@ -1,0 +1,26 @@
+{% extends "record_book/base.html" %} {% load bootstrap4 %} {% block extrahead %} {{ form.media }} {% endblock %} {% block content %}
+<div class="container blog bg-light p-5 mt-5 rounded ">
+    <div class="row">
+        <div class="col-3 text-center">
+            <a class="mugshot-container mb-1" href="{% url 'profile' exercise.ic.pk %}">
+                <div class="mugshot-img mb-2" style="background-image: url({{exercise.ic.profile.image.url}})"></div>
+                <span>{{exercise.ic.username}}</span>
+            </a>
+            <small class="text-muted">{{exercise.date_published|date:"d/m/Y h:i a"}}</small>
+        </div>
+        <div class="col-9 question-information pb-1">
+            <h1 class="blog-card-title mb-3 font-weight-bold">{{exercise.callsign}}</h1>
+            {% if request.user == exercise.ic %}
+            <a href="{% url 'record_book_update' exercise.pk %}" class="btn btn-sm btn-primary">
+Update</a>
+            <a href="{% url 'record_book_delete' exercise.pk %}" class="btn btn-sm btn-danger">
+Delete</a> {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mt-5">
+            <p class="line-height text-justify"> {{exercise.remarks}}</p>
+        </div>
+    </div>
+</div>
+{% endblock content %}

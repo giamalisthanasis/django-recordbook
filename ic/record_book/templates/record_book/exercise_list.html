@@ -1,0 +1,86 @@
+{% extends "record_book/base.html" %} {% load bootstrap4 %} {% block extrahead %} {{ form.media }}{% endblock %}{% block content %}
+<div class="landing bg-dark">
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-sm-12 col-lg-6 text-center">
+                {% if request.user.is_authenticated %}
+                <h1 class="text-white font-weight-bold display-3 mb-3">{{request.user}}</h1>
+                <h2 class="text-white font-weight-bold display-5 mb-3">My Exercises</h2>
+                <a href="{% url 'record_book_create' %}" class="nav-link btn btn-dark">ADD EXERCISE </a> {% else %}
+                <h1 class="text-white font-weight-bold display-3 mb-3">Exercise record book
+                </h1>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container p-5 rounded ">
+    <!-- <form method="POST"> -->
+    <!-- <div class="form-group"> -->
+    <!-- <button class="btn btn-outline-dark">Submit</button> -->
+    <!-- </div> -->
+    </form>
+    <form method="GET">
+        <input type="text" id="datepicker" name="exercise_date" value='{{ request.GET.exercise_date }}' autocomplete="off">
+        <button class="btn btn-outline-dark">Submit</button>
+        <!-- <input class="button" type='submit' value="Search Exercise"> -->
+    </form>
+</div>
+<!-- <script> -->
+    <!-- $( "#datepicker" ).datepicker({format: 'yy-mm-dd'}) ; -->
+<!-- </script> -->
+<div class="container p-5 rounded ">
+    {% if object_list.count > 0 %} {% for exercise in object_list %}
+    <div class="row blog mb-5">
+        <div class="col-lg-2 col-sm-12 text-center">
+            <a class="mugshot-container mb-1" href="{% url 'profile' exercise.ic.pk %}">
+
+                <div class="mugshot-img mb-2" style="background-image: url({{exercise.ic.profile.image.url}})"></div>
+                <span>{{exercise.ic.username}}</span>
+            </a>
+            <small class="text-muted">{{forloop.counter}} ---- {{exercise.date_published|date:"d/m/Y h:i a"}}</small>
+            <small class="text-muted">{{exercise.exercise_date|date:"d/m/Y"}}</small>
+            
+        </div>
+        <div class="col-lg-10 col-sm-12">
+            <div class="blog-information">
+                <h1 class="font-weight-bold mb-3">{{exercise.callsign}}</h1>
+                <p>{{exercise.remarks|truncatewords:30}}</p>
+                <a href="{% url 'exercises_detail' exercise.pk %}" class="font-weight-bold mb-3 d-inlineblock">
+                    Read More
+                </a>
+                <div class="update-edit">
+                    {% if request.user.is_authenticated and request.user == exercise.ic %}
+                    <a class="btn btn-sm btn-info" href="{% url 'record_book_update' exercise.pk %}">Update</a>
+                    <a class="btn btn-sm btn-danger" href="{% url 'record_book_delete' exercise.pk %}">Delete</a> 
+                    <a class="btn btn-sm btn-primary" href="{% url 'record_book_pdf' exercise.pk %}">Create PDF</a>
+                    <a class="btn btn-sm btn-primary" href="{% url 'record_book_html2pdf' exercise.pk %}">Create HTML2PDF</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+            <div class="step-divider">
+                <a href="?page=1">« first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            </div>
+            {% endif %}
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} </span> {% if page_obj.has_next %}
+        <div class="step-divider">
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last »</a>
+        </div>
+        {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <p class="mt-3 h3 text-muted text-center">Add a record? <a href="{% url 'record_book_create'%}">Click
+            here</a></p>
+    {% endif %}
+</div>
+{% endblock content %}

@@ -1,0 +1,48 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% static 'home/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'record_book/main.css' %}">
+    <script src="{% url 'js-catalog' %}"></script>
+    <script src="{% static '/admin/js/core.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'admin/css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/css/widgets.css' %}">
+    <title>My Record Book</title>
+</head>
+
+<body class="bg-light">
+    {{ form.media }}
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand " href="{% url 'exercise_list' %}">My Record Book</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="navbar-nav">
+                    <a href="{% url 'record_book_create' %}" class="nav-link ">ADD EXERCISE</a>{% if request.user.is_authenticated %}
+                    <a href=" {% url 'profile' request.user.pk %} " class="nav-link ">profile</a>
+                    <a href="{% url 'logout' %} " class="nav-link ">Logout</a> {% else %}
+                    <a href="{% url 'login' %} " class="nav-link ">Login</a>
+                    <a href="{% url 'register' %} " class="nav-link ">Register</a> {% endif %}
+                </div>
+            </div>
+        </nav>
+    </header>
+    {% block content %} {% endblock content %} {% if messages %} {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show custom-alert " role="alert ">
+        <strong>{{ message }}</strong>
+        <button type="button " class="close " data-dismiss="alert " aria-label="Close ">
+    <span aria-hidden="true ">×</span>
+    </button>
+    </div>
+    {% endfor %} {% endif %}
+    <script src="{% static 'home/jquery-3.6.0.min.js' %} "></script>
+    <script src="{% static 'home/js/bootstrap.min.js' %} "></script>
+</body>
+
+</html>
