@@ -10,7 +10,6 @@ django-crispy-forms>=1.13.0
 django-widget-tweaks>=1.4.9
 future==0.18.2
 html5lib==1.1
-Pillow==8.3.2
 pycodestyle==2.7.0
 PyPDF2==1.26.0
 reportlab==3.6.5
